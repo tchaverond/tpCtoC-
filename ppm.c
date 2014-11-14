@@ -38,10 +38,9 @@ int main(int argc, char* argv[])
   u_char* image = NULL;
   int width;
   int height;
-  FILE* ppm_input = fopen("gargouille.ppm", "rb");
+  FILE* ppm_input;
+ 
   ppm_read_from_file(&width, &height, &image, ppm_input);
-  fclose(ppm_input);
-
 
   //--------------------------------------------------------------------------
   // Create a desaturated (B&W) copy of the image we've just read and
@@ -57,9 +56,9 @@ int main(int argc, char* argv[])
   ppm_desaturate(image_bw, width, height);
 
   // Write the desaturated image into "gargouille_BW.ppm"
-  FILE* ppm_output = fopen("gargouille_BW.ppm", "wb");
+  FILE* ppm_output;
+  
   ppm_write_to_file(width, height, image_bw, ppm_output);
-  fclose(ppm_output);
 
   // Free the desaturated image
   free(image_bw);
@@ -79,9 +78,7 @@ int main(int argc, char* argv[])
   ppm_shrink(&image_small, &width_small, &height_small, 2);
 
   // Write the desaturated image into "gargouille_small.ppm"
-  ppm_output = fopen("gargouille_small.ppm", "wb");
   ppm_write_to_file(width_small, height_small, image_small, ppm_output);
-  fclose(ppm_output);
 
   // Free the not yet freed images
   free(image);
@@ -93,19 +90,22 @@ int main(int argc, char* argv[])
 
 
 //============================================================================
-//                           Function declarations
+//                           Function definitions
 //============================================================================
 void ppm_write_to_file(int width, int height, u_char* data, FILE* file)
 {
+  file = fopen("gargouille_BW.ppm", "wb");
   // Write header
   fprintf(file, "P6\n%d %d\n255\n", width, height);
 
   // Write pixels
   fwrite(data, 3, width*height, file);
+  fclose(ppm_output);
 }
 
 void ppm_read_from_file(int *width, int *height, u_char** data, FILE* file)
 {
+  file = fopen("gargouille.ppm", "rb");
   // Read file header
   fscanf(file, "P6\n%d %d\n255\n", width, height);
 
@@ -114,6 +114,7 @@ void ppm_read_from_file(int *width, int *height, u_char** data, FILE* file)
 
   // Read the actual image data
   fread(*data, 3, (*width) * (*height), file);
+  fclose(file);
 }
 
 void ppm_desaturate(u_char* image, int width, int height)
