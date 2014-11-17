@@ -18,6 +18,37 @@ img :: img(const img& model)
   *data = *(model.data);
 }
 
+int img :: getwidth (void) const
+{
+  return width;
+}
+
+int img :: getheight (void) const
+{
+  return height;
+}
+
+unsigned char* img :: getdata (void) const
+{
+  return data;
+}
+
+void img :: setwidth (int new_width)
+{
+  width = new_width;
+}
+
+void img :: setheight (int new_height)
+{
+  height = new_height;
+}
+
+void img :: setdata (unsigned char* new_data)
+{
+  *data = *(new_data);
+}
+
+
 void img :: ppm_write_to_file(int width, int height, unsigned char* data, FILE* file, char string[])
 {
   file = fopen(string, "wb");
