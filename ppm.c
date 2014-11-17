@@ -21,8 +21,8 @@ typedef struct
 //                           Function declarations
 //============================================================================
 // Write the image contained in <data> (of size <width> * <height>)
-// into plain RGB ppm file <file>
-void ppm_write_to_file(int width, int height, u_char* data, FILE* file);
+// into plain RGB ppm file <file>, which names is <string>
+void ppm_write_to_file(int width, int height, u_char* data, FILE* file, char string[]);
 
 // Read the image contained in plain RGB ppm file <file>
 // into <data> and set <width> and <height> accordingly
@@ -49,11 +49,6 @@ int main(int argc, char* argv[])
   img* gargouille = (img*) malloc (sizeof(img*));
   gargouille->data = NULL;           
 
-  /*int width;
-  int height;
-  FILE* ppm_input;*/
- 
-  //ppm_read_from_file(&width, &height, &image, ppm_input);
   ppm_read_from_file(&(gargouille->width),&(gargouille->height), &(gargouille->data), gargouille->image);
 
   //--------------------------------------------------------------------------
@@ -61,10 +56,6 @@ int main(int argc, char* argv[])
   // write it into "gargouille_BW.ppm"
   //--------------------------------------------------------------------------
   // Copy image into image_bw
-  /*int width_bw  = width;
-  int height_bw = height;
-  u_char* image_bw = (u_char*) malloc(3 * width * height * sizeof(*image_bw));
-  memcpy(image_bw, image, 3 * width * height * sizeof(*image_bw));*/
   img* gargouille_bw = (img*) malloc (sizeof(img*));
   gargouille_bw->width = gargouille->width;
   gargouille_bw->height = gargouille->height;
@@ -78,7 +69,8 @@ int main(int argc, char* argv[])
   // Write the desaturated image into "gargouille_BW.ppm"
   //FILE* ppm_output;
   //ppm_write_to_file(width, height, image_bw, ppm_output);
-  ppm_write_to_file(gargouille->width, gargouille->height, gargouille_bw->data, gargouille_bw->image);
+  char output[] = "gargouille_BW.ppm";
+  ppm_write_to_file(gargouille->width, gargouille->height, gargouille_bw->data, gargouille_bw->image,output);
 
   // Free the desaturated image
   //free(image_bw);
@@ -89,10 +81,6 @@ int main(int argc, char* argv[])
   // write it into "gargouille_small.ppm"
   //--------------------------------------------------------------------------
   // Copy image into image_small
-  /*int width_small  = width;
-  int height_small = height;
-  u_char* image_small = (u_char*) malloc(3 * width_small * height_small * sizeof(*image_small));
-  memcpy(image_small, image, 3 * width_small * height_small * sizeof(*image_small));*/
   img* gargouille_small = (img*) malloc (sizeof(img*));
   gargouille_small->width = gargouille->width;
   gargouille_small->height = gargouille->height;
@@ -100,16 +88,13 @@ int main(int argc, char* argv[])
   memcpy(gargouille_small->data, gargouille->data, 3 * gargouille->width * gargouille->height * sizeof(*(gargouille_small->data)));
 
   // Shrink image_small size 2-fold
-  //ppm_shrink(&image_small, &width_small, &height_small, 2);
   ppm_shrink(&(gargouille_small->data), &(gargouille_small->width), &(gargouille_small->height), 2);
 
   // Write the desaturated image into "gargouille_small.ppm"
-  //ppm_write_to_file(width_small, height_small, image_small, ppm_output);
-  ppm_write_to_file(gargouille_small->width, gargouille_small->height, gargouille_small->data, gargouille_small->image);
+  char output2[] = "gargouille_small.ppm";
+  ppm_write_to_file(gargouille_small->width, gargouille_small->height, gargouille_small->data, gargouille_small->image,output2);
 
   // Free the not yet freed images
-  /*free(image);
-    free(image_small);*/
   free(gargouille->data);
   free(gargouille_small->data);
 
@@ -125,9 +110,9 @@ int main(int argc, char* argv[])
 //============================================================================
 //                           Function definitions
 //============================================================================
-void ppm_write_to_file(int width, int height, u_char* data, FILE* file)
+void ppm_write_to_file(int width, int height, u_char* data, FILE* file, char string[])
 {
-  file = fopen("gargouille_BW.ppm", "wb");
+  file = fopen(string, "wb");
   // Write header
   fprintf(file, "P6\n%d %d\n255\n", width, height);
 
