@@ -12,7 +12,6 @@ img :: img(void)
 
 img :: img(const img& model)
 {
-  *image = *(model.image);
   width = model.width;
   height = model.height;
   *data = *(model.data);
@@ -49,9 +48,9 @@ void img :: setdata (unsigned char* new_data)
 }
 
 
-void img :: ppm_write_to_file(int width, int height, unsigned char* data, FILE* file, char string[])
+void img :: ppm_write_to_file(int width, int height, unsigned char* data,  char string[])
 {
-  file = fopen(string, "wb");
+  FILE* file = fopen(string, "wb");
   // Write header
   fprintf(file, "P6\n%d %d\n255\n", width, height);
 
@@ -60,9 +59,9 @@ void img :: ppm_write_to_file(int width, int height, unsigned char* data, FILE* 
   fclose(file);
 }
 
-void img :: ppm_read_from_file(int *width, int *height, unsigned char** data, FILE* file)
+void img :: ppm_read_from_file(int *width, int *height, unsigned char** data)
 {
-  file = fopen("gargouille.ppm", "rb");
+  FILE* file = fopen("gargouille.ppm", "rb");
   // Read file header
   fscanf(file, "P6\n%d %d\n255\n", width, height);
 
