@@ -40,16 +40,6 @@ unsigned char* img :: getdata (void) const
   return data;
 }
 
-void img :: setwidth (int new_width)
-{
-  width = new_width;
-}
-
-void img :: setheight (int new_height)
-{
-  height = new_height;
-}
-
 
 void img :: ppm_write_to_file(char string[])
 {

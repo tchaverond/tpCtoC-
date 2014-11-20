@@ -14,9 +14,6 @@ class img
   int getheight(void) const;
   unsigned char* getdata(void) const;
 
-  void setwidth(int);
-  void setheight(int);
-
   void ppm_write_to_file(char[]);
   void ppm_read_from_file(void);
   void ppm_desaturate(void);

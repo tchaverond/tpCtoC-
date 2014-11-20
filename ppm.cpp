@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
   //--------------------------------------------------------------------------
   img* gargouille = new img();
   gargouille->ppm_read_from_file();
-  printf("%d %d\n",gargouille->getwidth(),gargouille->getheight());
+
   //--------------------------------------------------------------------------
   // Create a desaturated (B&W) copy of the image we've just read and
   // write it into "gargouille_BW.ppm"
